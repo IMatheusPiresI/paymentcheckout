@@ -3,14 +3,13 @@ import {
   ReduxAction,
   ReduxInitialState,
   ReduxPayloadCompleteStep,
-  ReduxStep,
 } from '../../@types/redux';
 
 // Action Types
 
 export const Types = {
   NEXT_STEP: 'NEXT_STEP',
-  PREVIOS_STEP: 'PREVIOS_STEP',
+  GO_BACK_STEP: 'GO_BACK_STEP',
   COMPLETE_STEP: 'COMPLETE_STEP',
   PAYMENT_TYPE: 'PAYMENT_TYPE',
 };
@@ -35,6 +34,7 @@ const initialState: ReduxInitialState = {
       data: {
         expirationDate: '',
         nameCard: '',
+        cardNumber: '',
         paymentType: {
           image: null,
           title: '',
@@ -84,8 +84,68 @@ export default function checkoutReducer(
             steps: state.steps,
           });
         case 'Review':
-          state.steps['review'].complete = true;
-          state.currentStep = 'Complete';
+          state.steps.review['complete'] = true;
+          return (state = {
+            currentStep: 'Complete',
+            steps: {
+              ...state.steps,
+            },
+          });
+        case 'Complete':
+          return (state = {
+            currentStep: 'Shipping',
+            steps: {
+              shipping: {
+                complete: false,
+                data: {
+                  city: '',
+                  country: '',
+                  fullName: '',
+                  number: '',
+                  streetAddress: '',
+                },
+              },
+              payment: {
+                complete: false,
+                data: {
+                  expirationDate: '',
+                  nameCard: '',
+                  cardNumber: '',
+                  paymentType: {
+                    image: null,
+                    title: '',
+                    type: '',
+                  },
+                  securityCode: '',
+                },
+              },
+              review: {
+                complete: false,
+              },
+            },
+          });
+
+        default:
+          return state;
+      }
+    case Types.GO_BACK_STEP:
+      switch (action.payload.currentStep) {
+        case 'Shipping':
+          state.steps.payment['complete'] = false;
+          state.steps.shipping['complete'] = false;
+          return (state = {
+            currentStep: 'Shipping',
+            steps: state.steps,
+          });
+
+        case 'Payment':
+          state.steps.payment['complete'] = false;
+          return (state = {
+            currentStep: 'Payment',
+            steps: state.steps,
+          });
+
+        default:
           return state;
       }
 
@@ -109,5 +169,10 @@ export const Creators = {
     payload: {
       paymentType: payload,
     },
+  }),
+
+  goBackToStep: (payload: Pick<ReduxPayloadCompleteStep, 'currentStep'>) => ({
+    type: Types.GO_BACK_STEP,
+    payload,
   }),
 };

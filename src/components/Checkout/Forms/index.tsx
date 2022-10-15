@@ -5,6 +5,7 @@ import {FormShipping} from './Steps/Shipping';
 import {useSelector} from 'react-redux';
 import {FormPayment} from './Steps/Payment/Index';
 import {FormReview} from './Steps/Review';
+import {Complete} from './Steps/Complete';
 
 export const Form = () => {
   const state = useSelector((state: any) => state.checkoutReducer);
@@ -30,7 +31,7 @@ export const Form = () => {
           "By clicking submit order, you agree to Fintory's Terms of Use and Privacy Policy";
         break;
       default:
-        null;
+        return null;
     }
 
     return (
@@ -60,6 +61,8 @@ export const Form = () => {
         return <FormPayment />;
       case 'Review':
         return <FormReview />;
+      case 'Complete':
+        return <Complete />;
       default:
         null;
     }

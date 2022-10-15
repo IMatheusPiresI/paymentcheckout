@@ -27,6 +27,7 @@ type ReduxPayment = {
   data: {
     paymentType: PaymentType;
     nameCard: string;
+    cardNumber: string;
     expirationDate: string;
     securityCode: string;
   };

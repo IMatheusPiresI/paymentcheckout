@@ -6,7 +6,7 @@ import {InputLabelForm} from '../../InputLabel';
 import {ShippingForm} from '../../../../../@types/forms';
 import {ButtonConfirm} from '../../../ButtonConfirm';
 
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Creators} from '../../../../../store/ducks/checkout';
 
 import * as yup from 'yup';
@@ -22,12 +22,22 @@ const schema = yup.object({
 
 export const FormShipping: React.FC = () => {
   const {
+    steps: {shipping},
+  } = useSelector((state: any) => state.checkoutReducer);
+  const {
     control,
     handleSubmit,
     formState: {errors, isValid},
   } = useForm<ShippingForm>({
     resolver: yupResolver(schema),
     mode: 'onChange',
+    defaultValues: {
+      city: shipping.data.city,
+      country: shipping.data.country,
+      fullName: shipping.data.fullName,
+      number: shipping.data.number,
+      streetAddress: shipping.data.streetAddress,
+    },
   });
   const dispatch = useDispatch();
 

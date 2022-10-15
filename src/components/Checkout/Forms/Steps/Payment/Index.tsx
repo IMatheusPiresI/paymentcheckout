@@ -23,7 +23,9 @@ const schema = yup.object({
 });
 
 export const FormPayment: React.FC = () => {
-  const {steps} = useSelector((state: any) => state.checkoutReducer);
+  const {
+    steps: {payment},
+  } = useSelector((state: any) => state.checkoutReducer);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const {
     control,
@@ -32,7 +34,12 @@ export const FormPayment: React.FC = () => {
   } = useForm<PaymentForm>({
     resolver: yupResolver(schema),
     mode: 'onChange',
-    defaultValues: {},
+    defaultValues: {
+      cardNumber: payment.data.cardNumber,
+      expirationDate: payment.data.expirationDate,
+      nameCard: payment.data.nameCard,
+      securityCode: payment.data.securityCode,
+    },
   });
   const dispatch = useDispatch();
 
@@ -44,9 +51,9 @@ export const FormPayment: React.FC = () => {
           data: {
             ...data,
             paymentType: {
-              title: steps.payment.data.paymentType.title,
-              image: steps.payment.data.paymentType.image,
-              type: steps.payment.data.paymentType.type,
+              title: payment.data.paymentType.title,
+              image: payment.data.paymentType.image,
+              type: payment.data.paymentType.type,
             },
           },
         },
@@ -64,13 +71,9 @@ export const FormPayment: React.FC = () => {
     );
   };
 
-  useEffect(() => {
-    console.log(steps.payment.data.paymentType);
-  }, [steps]);
-
   return (
     <VStack flex="1">
-      {steps.payment.data.paymentType.type !== '' ? (
+      {payment.data.paymentType.type !== '' ? (
         <>
           <ScrollView
             paddingX="4"
@@ -79,12 +82,12 @@ export const FormPayment: React.FC = () => {
             <Box mb="4">
               <Radio.Group
                 name="radioGroup"
-                value={steps.payment.data.paymentType.type}
+                value={payment.data.paymentType.type}
                 colorScheme={'light'}>
                 <PaymentTypeRadio
-                  title={steps.payment.data.paymentType.title}
-                  image={steps.payment.data.paymentType.image}
-                  value={steps.payment.data.paymentType.type}
+                  title={payment.data.paymentType.title}
+                  image={payment.data.paymentType.image}
+                  value={payment.data.paymentType.type}
                   button
                   onPress={handleChangePaymentType}
                 />

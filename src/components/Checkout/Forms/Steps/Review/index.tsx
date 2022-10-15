@@ -1,15 +1,40 @@
 import {Button, HStack, Image, ScrollView, Text, VStack} from 'native-base';
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import {ButtonConfirm} from '../../../ButtonConfirm';
+import {Creators} from '../../../../../store/ducks/checkout';
 
 export const FormReview: React.FC = () => {
-  const {steps} = useSelector((state: any) => state.checkoutReducer);
+  const {
+    steps: {payment, shipping},
+  } = useSelector((state: any) => state.checkoutReducer);
+  const dispatch = useDispatch();
+
+  const renderLastPaymentCardNumber = () => {
+    const lastItem: number = payment.data.cardNumber.length;
+    return payment.data.cardNumber.slice(lastItem - 4, lastItem);
+  };
+
+  const renderShippingInfo = (shippingInfo: any) => {
+    if (shippingInfo.length > 20) {
+      return `${shippingInfo.slice(0, 20)}...`;
+    }
+    return shippingInfo;
+  };
+
+  const handleConfirmPayment = () => {
+    dispatch(
+      Creators.completeStep({
+        currentStep: 'Review',
+      }),
+    );
+  };
+
   return (
     <VStack flex="1">
-      <ScrollView px="4" mb="32">
+      <ScrollView px="4" flex="1" showsVerticalScrollIndicator={false} mb="1">
         <VStack borderWidth={1} borderColor="gray.300" p="5" borderRadius="2xl">
           <HStack justifyContent="space-between">
             <Text fontWeight="bold" fontSize={17}>
@@ -24,7 +49,7 @@ export const FormReview: React.FC = () => {
           <HStack mt="4" justifyContent="space-between">
             <HStack>
               <Image
-                source={steps.payment.data.paymentType.image}
+                source={payment.data.paymentType.image}
                 alt="payment method"
                 width="16"
                 height="5"
@@ -42,10 +67,10 @@ export const FormReview: React.FC = () => {
                   style={{right: 3}}
                   color="#0006"
                 />
-                <Text color="gray.900">1321</Text>
+                <Text color="gray.900">{renderLastPaymentCardNumber()}</Text>
               </HStack>
             </HStack>
-            <Text color="gray.900">01/21</Text>
+            <Text color="gray.900">{payment.data.expirationDate}</Text>
           </HStack>
         </VStack>
         <VStack
@@ -67,28 +92,27 @@ export const FormReview: React.FC = () => {
           <VStack mt="4">
             <HStack justifyContent="space-between">
               <Text color="gray.600">Name</Text>
-              <Text>Luke Skywalker</Text>
+              <Text>{renderShippingInfo(shipping.data.fullName)}</Text>
             </HStack>
             <HStack justifyContent="space-between" mt="2">
               <Text color="gray.600">Street</Text>
-              <Text>Luke Skywalker</Text>
+              <Text>{renderShippingInfo(shipping.data.streetAddress)}</Text>
             </HStack>
             <HStack justifyContent="space-between" mt="2">
               <Text color="gray.600">Country</Text>
-              <Text>Luke Skywalker</Text>
+              <Text>{renderShippingInfo(shipping.data.country)}</Text>
             </HStack>
             <HStack justifyContent="space-between" mt="2">
               <Text color="gray.600">Number</Text>
-              <Text>Luke Skywalker</Text>
-            </HStack>
-            <HStack justifyContent="space-between" mt="2">
-              <Text color="gray.600">Number</Text>
-              <Text>Luke Skywalker</Text>
+              <Text>{renderShippingInfo(shipping.data.number)}</Text>
             </HStack>
           </VStack>
         </VStack>
       </ScrollView>
-      <ButtonConfirm title="Confirm payment info" />
+      <ButtonConfirm
+        title="Confirm payment info"
+        onPress={handleConfirmPayment}
+      />
     </VStack>
   );
 };

@@ -2,8 +2,9 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Box, Button, HStack, Text, IButtonProps} from 'native-base';
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {ReduxStep} from '../../../@types/redux';
+import {Creators} from '../../../store/ducks/checkout';
 
 type ButtonStatusProps = {
   stepNumber: number;
@@ -15,43 +16,54 @@ export const ButtonStatus: React.FC<ButtonStatusProps> = ({
   title,
 }) => {
   const state = useSelector((state: any) => state.checkoutReducer);
+  const dispatch = useDispatch();
 
   const applyOpacity = useCallback(() => {
     console.log(state.steps);
-    if (
-      !state.steps[title.toLowerCase()].complete &&
-      state.currentStep !== title
-    ) {
+    const step = title.toLowerCase();
+    if (!state.steps[step].complete && state.currentStep !== title) {
       return 0.5;
     } else {
       return 1;
     }
   }, [state]);
 
-  useEffect(() => {
-    console.log(state.steps.payment.data.paymentType);
-  }, []);
+  const handleGoBackToStep = () => {
+    if (state.currentStep === title || state.steps.review.complete) return;
+    console.log(title);
+    dispatch(
+      Creators.goBackToStep({
+        currentStep: title,
+      }),
+    );
+  };
 
   return (
-    <HStack alignItems="center" opacity={applyOpacity()}>
-      <Box
-        w="7"
-        h="7"
-        alignItems="center"
-        justifyContent="center"
-        borderRadius="full"
-        bgColor={
-          state.steps[title.toLowerCase()].complete ? 'emerald.500' : 'black'
-        }>
-        {state.steps[title.toLowerCase()].complete ? (
-          <IconFontAwesome name="check" size={15} color="#FFF" />
-        ) : (
-          <Text fontSize={14} color="#FFF">
-            {stepNumber}
-          </Text>
-        )}
-      </Box>
-      <Text ml="2">{title}</Text>
-    </HStack>
+    <Button
+      p="0"
+      variant="ghost"
+      bgColor="transparent"
+      onPress={handleGoBackToStep}>
+      <HStack alignItems="center" opacity={applyOpacity()}>
+        <Box
+          w="7"
+          h="7"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="full"
+          bgColor={
+            state.steps[title.toLowerCase()].complete ? 'emerald.500' : 'black'
+          }>
+          {state.steps[title.toLowerCase()].complete ? (
+            <IconFontAwesome name="check" size={15} color="#FFF" />
+          ) : (
+            <Text fontSize={14} color="#FFF">
+              {stepNumber}
+            </Text>
+          )}
+        </Box>
+        <Text ml="2">{title}</Text>
+      </HStack>
+    </Button>
   );
 };
