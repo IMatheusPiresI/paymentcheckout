@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Radio, VStack} from 'native-base';
+import {Box, Radio, ScrollView, VStack} from 'native-base';
 
 import {PaymentTypeRadio} from '../PaymentTypeRadio';
 
@@ -50,31 +50,32 @@ export const PaymentTypes: React.FC = () => {
     );
   };
   return (
-    <VStack paddingX="4" flex="1">
-      <Radio.Group
-        name="paymentTypes"
-        value={paymentType}
-        onChange={nextValue => setPaymentType(nextValue)}>
-        <PaymentTypeRadio
-          image={masterCard}
-          title={'Credit card'}
-          value="creditCard"
-        />
-        <PaymentTypeRadio
-          image={applePay}
-          title={'Apple Pay'}
-          value="applePay"
-        />
-        <PaymentTypeRadio image={payPal} title={'PayPal'} value="payPal" />
-        <PaymentTypeRadio image={alipay} title={'Alipay'} value="alipay" />
-      </Radio.Group>
-
+    <>
+      <ScrollView paddingX="4" flex="1">
+        <Radio.Group
+          name="paymentTypes"
+          value={paymentType}
+          onChange={nextValue => setPaymentType(nextValue)}>
+          <PaymentTypeRadio
+            image={masterCard}
+            title={'Credit card'}
+            value="creditCard"
+          />
+          <PaymentTypeRadio
+            image={applePay}
+            title={'Apple Pay'}
+            value="applePay"
+          />
+          <PaymentTypeRadio image={payPal} title={'PayPal'} value="payPal" />
+          <PaymentTypeRadio image={alipay} title={'Alipay'} value="alipay" />
+        </Radio.Group>
+      </ScrollView>
       <ButtonConfirm
         title="Confirm payment type"
         onPress={handleSetPaymentType}
         opacity={!paymentType ? 0.5 : 1}
         disabled={paymentType === ''}
       />
-    </VStack>
+    </>
   );
 };

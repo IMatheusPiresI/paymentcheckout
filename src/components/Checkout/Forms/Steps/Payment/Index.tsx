@@ -23,6 +23,7 @@ const schema = yup.object({
 });
 
 export const FormPayment: React.FC = () => {
+  const {steps} = useSelector((state: any) => state.checkoutReducer);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const {
     control,
@@ -31,9 +32,9 @@ export const FormPayment: React.FC = () => {
   } = useForm<PaymentForm>({
     resolver: yupResolver(schema),
     mode: 'onChange',
+    defaultValues: {},
   });
   const dispatch = useDispatch();
-  const {steps} = useSelector((state: any) => state.checkoutReducer);
 
   const handleSubmitForm = (data: PaymentForm) => {
     dispatch(
@@ -43,7 +44,9 @@ export const FormPayment: React.FC = () => {
           data: {
             ...data,
             paymentType: {
-              ...steps.payment.paymentType,
+              title: steps.payment.data.paymentType.title,
+              image: steps.payment.data.paymentType.image,
+              type: steps.payment.data.paymentType.type,
             },
           },
         },
@@ -69,7 +72,10 @@ export const FormPayment: React.FC = () => {
     <VStack flex="1">
       {steps.payment.data.paymentType.type !== '' ? (
         <>
-          <ScrollView paddingX="4" mb="20">
+          <ScrollView
+            paddingX="4"
+            flex="1"
+            showsVerticalScrollIndicator={false}>
             <Box mb="4">
               <Radio.Group
                 name="radioGroup"

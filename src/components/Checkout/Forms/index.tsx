@@ -4,6 +4,7 @@ import {FormShipping} from './Steps/Shipping';
 
 import {useSelector} from 'react-redux';
 import {FormPayment} from './Steps/Payment/Index';
+import {FormReview} from './Steps/Review';
 
 export const Form = () => {
   const state = useSelector((state: any) => state.checkoutReducer);
@@ -57,6 +58,8 @@ export const Form = () => {
         return <FormShipping />;
       case 'Payment':
         return <FormPayment />;
+      case 'Review':
+        return <FormReview />;
       default:
         null;
     }

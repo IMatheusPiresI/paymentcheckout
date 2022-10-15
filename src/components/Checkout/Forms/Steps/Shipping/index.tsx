@@ -54,7 +54,6 @@ export const FormShipping: React.FC = () => {
       <ScrollView
         padding="4"
         flex="1"
-        mb="20"
         contentContainerStyle={{paddingBottom: 30}}
         showsVerticalScrollIndicator={false}>
         <Box marginBottom="3">
