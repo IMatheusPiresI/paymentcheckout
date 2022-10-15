@@ -4,14 +4,17 @@ import 'react-native-gesture-handler';
 import {NativeBaseProvider} from 'native-base';
 import AppRoutes from './src/routes';
 import {Provider} from 'react-redux';
-import {store} from './src/store';
+import {PersistGate} from 'redux-persist/integration/react';
+import {persistor, store} from './src/store';
 
 const App = () => {
   return (
     <Provider store={store}>
-      <NativeBaseProvider>
-        <AppRoutes />
-      </NativeBaseProvider>
+      <PersistGate persistor={persistor}>
+        <NativeBaseProvider>
+          <AppRoutes />
+        </NativeBaseProvider>
+      </PersistGate>
     </Provider>
   );
 };

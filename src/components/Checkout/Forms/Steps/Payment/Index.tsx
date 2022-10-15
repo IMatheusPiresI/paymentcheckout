@@ -43,6 +43,8 @@ export const FormPayment: React.FC = () => {
   });
   const dispatch = useDispatch();
 
+  console.log(payment.data.paymentType.image);
+
   const handleSubmitForm = (data: PaymentForm) => {
     dispatch(
       Creators.completeStep({
