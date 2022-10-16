@@ -44,7 +44,9 @@ type ReduxInitialState = {
   };
 };
 
-type ReduxState = {};
+type ReduxState = {
+  checkoutReducer: ReduxInitialState;
+};
 
 type ReduxPayload = {
   currentStep?: ReduxStep;

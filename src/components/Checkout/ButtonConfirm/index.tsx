@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Keyboard} from 'react-native';
 
 import {Box, Button, HStack, IButtonProps, Text, VStack} from 'native-base';
@@ -9,6 +9,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {useSelector} from 'react-redux';
+import {ReduxState} from '../../../@types/redux';
 
 type ButtonConfirmProps = {
   title: string;
@@ -18,7 +19,7 @@ export const ButtonConfirm: React.FC<ButtonConfirmProps> = ({
   title,
   ...rest
 }) => {
-  const state = useSelector((state: any) => state.checkoutReducer);
+  const state = useSelector((state: ReduxState) => state.checkoutReducer);
   const renderHeight = state.currentStep === 'Review' ? 255 : 95;
   const heightValue = useSharedValue(renderHeight);
 

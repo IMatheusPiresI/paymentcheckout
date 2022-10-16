@@ -11,19 +11,23 @@ import {Creators} from '../../../../../store/ducks/checkout';
 
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {ReduxState} from '../../../../../@types/redux';
 
 const schema = yup.object({
   country: yup.string().required('Country is required').trim(),
   fullName: yup.string().required('Full name is required').trim(),
   streetAddress: yup.string().required('Street address is required').trim(),
   city: yup.string().required('City is required').trim(),
-  number: yup.string().required('Number is required'),
+  number: yup
+    .number()
+    .typeError('This field only accepts numbers')
+    .required('Number is required'),
 });
 
 export const FormShipping: React.FC = () => {
   const {
     steps: {shipping},
-  } = useSelector((state: any) => state.checkoutReducer);
+  } = useSelector((state: ReduxState) => state.checkoutReducer);
   const {
     control,
     handleSubmit,

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Text, VStack} from 'native-base';
 import {FormShipping} from './Steps/Shipping';
 
@@ -6,14 +6,17 @@ import {useSelector} from 'react-redux';
 import {FormPayment} from './Steps/Payment/Index';
 import {FormReview} from './Steps/Review';
 import {Complete} from './Steps/Complete';
+import {ReduxState} from '../../../@types/redux';
 
 export const Form = () => {
-  const state = useSelector((state: any) => state.checkoutReducer);
+  const {currentStep} = useSelector(
+    (state: ReduxState) => state.checkoutReducer,
+  );
 
   const renderHeaderForm = () => {
     console.log('executei header');
     let title, subtitle;
-    switch (state.currentStep) {
+    switch (currentStep) {
       case 'Shipping':
         title = 'Enter your shipping address';
         subtitle = '';
@@ -54,7 +57,7 @@ export const Form = () => {
   };
 
   const renderForm = () => {
-    switch (state.currentStep) {
+    switch (currentStep) {
       case 'Shipping':
         return <FormShipping />;
       case 'Payment':

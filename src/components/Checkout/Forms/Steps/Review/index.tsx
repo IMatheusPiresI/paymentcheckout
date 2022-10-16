@@ -1,16 +1,17 @@
 import {Button, HStack, Image, ScrollView, Text, VStack} from 'native-base';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import {ButtonConfirm} from '../../../ButtonConfirm';
 import {Creators} from '../../../../../store/ducks/checkout';
 import {getPaymentInfo} from '../../../../../utils/renderImagePayment';
+import {ReduxState} from '../../../../../@types/redux';
 
 export const FormReview: React.FC = () => {
   const {
     steps: {payment, shipping},
-  } = useSelector((state: any) => state.checkoutReducer);
+  } = useSelector((state: ReduxState) => state.checkoutReducer);
   const dispatch = useDispatch();
   const paymentInfo = getPaymentInfo(payment.data.paymentType);
 
@@ -19,7 +20,7 @@ export const FormReview: React.FC = () => {
     return payment.data.cardNumber.slice(lastItem - 4, lastItem);
   };
 
-  const renderShippingInfo = (shippingInfo: any) => {
+  const renderShippingInfo = (shippingInfo: string) => {
     if (shippingInfo.length > 20) {
       return `${shippingInfo.slice(0, 20)}...`;
     }

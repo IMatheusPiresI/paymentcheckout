@@ -1,4 +1,4 @@
-import {HStack, VStack, Text, Box} from 'native-base';
+import {HStack, VStack, Text} from 'native-base';
 import React from 'react';
 import {Control, FieldError} from 'react-hook-form';
 import {TextInputProps} from 'react-native';

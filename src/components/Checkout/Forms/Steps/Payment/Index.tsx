@@ -10,12 +10,11 @@ import {PaymentForm} from '../../../../../@types/forms';
 import {Creators} from '../../../../../store/ducks/checkout';
 import {useDispatch, useSelector} from 'react-redux';
 import {PaymentTypes} from '../../../PaymentTypes';
-import {PaymentTypeRadio} from '../../../PaymentTypeRadio';
 
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {ImageSourcePropType} from 'react-native';
 import {PaymentTypeSelected} from '../../PaymentTypeSelected';
+import {ReduxState} from '../../../../../@types/redux';
 
 const schema = yup.object({
   nameCard: yup.string().required(),
@@ -27,7 +26,7 @@ const schema = yup.object({
 export const FormPayment: React.FC = () => {
   const {
     steps: {payment},
-  } = useSelector((state: any) => state.checkoutReducer);
+  } = useSelector((state: ReduxState) => state.checkoutReducer);
   const dispatch = useDispatch();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const {

@@ -1,13 +1,12 @@
 import {Box, Text, VStack} from 'native-base';
 import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import {ButtonConfirm} from '../../../ButtonConfirm';
 import {useNavigation} from '@react-navigation/native';
 import {Creators} from '../../../../../store/ducks/checkout';
 
 export const Complete: React.FC = () => {
-  const {steps} = useSelector((state: any) => state.checkoutReducer);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
