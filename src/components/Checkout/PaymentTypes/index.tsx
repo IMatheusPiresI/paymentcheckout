@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Radio, ScrollView, VStack} from 'native-base';
+import {Radio, ScrollView} from 'native-base';
 
 import {PaymentTypeRadio} from '../PaymentTypeRadio';
 
@@ -8,8 +8,6 @@ import applePay from '../../../assets/images/applepay.png';
 import payPal from '../../../assets/images/paypal.png';
 import alipay from '../../../assets/images/alipay.png';
 import {ButtonConfirm} from '../ButtonConfirm';
-import {PaymentType} from '../../../@types/forms';
-import {ImageSourcePropType} from 'react-native';
 
 import {useDispatch} from 'react-redux';
 import {Creators} from '../../../store/ducks/checkout';
@@ -19,35 +17,7 @@ export const PaymentTypes: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleSetPaymentType = () => {
-    let image: ImageSourcePropType;
-    let title: string;
-    switch (paymentType) {
-      case 'creditCard':
-        image = masterCard;
-        title = 'Credit card';
-        break;
-      case 'applePay':
-        image = applePay;
-        title = 'ApplePay';
-        break;
-      case 'payPal':
-        image = payPal;
-        title = 'PayPal';
-        break;
-      case 'alipay':
-        image = alipay;
-        title = 'Alipay';
-        break;
-      default:
-        return;
-    }
-    dispatch(
-      Creators.paymentType({
-        type: paymentType,
-        image,
-        title,
-      }),
-    );
+    dispatch(Creators.paymentType(paymentType));
   };
   return (
     <>

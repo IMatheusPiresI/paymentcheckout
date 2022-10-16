@@ -11,8 +11,6 @@ export const Complete: React.FC = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  console.log(steps.payment.data);
-
   const handleGoBackHome = () => {
     navigation.navigate('Home');
     dispatch(

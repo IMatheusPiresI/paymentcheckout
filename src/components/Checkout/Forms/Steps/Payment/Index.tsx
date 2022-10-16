@@ -14,6 +14,8 @@ import {PaymentTypeRadio} from '../../../PaymentTypeRadio';
 
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {ImageSourcePropType} from 'react-native';
+import {PaymentTypeSelected} from '../../PaymentTypeSelected';
 
 const schema = yup.object({
   nameCard: yup.string().required(),
@@ -26,6 +28,7 @@ export const FormPayment: React.FC = () => {
   const {
     steps: {payment},
   } = useSelector((state: any) => state.checkoutReducer);
+  const dispatch = useDispatch();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const {
     control,
@@ -41,9 +44,6 @@ export const FormPayment: React.FC = () => {
       securityCode: payment.data.securityCode,
     },
   });
-  const dispatch = useDispatch();
-
-  console.log(payment.data.paymentType.image);
 
   const handleSubmitForm = (data: PaymentForm) => {
     dispatch(
@@ -52,48 +52,23 @@ export const FormPayment: React.FC = () => {
         payment: {
           data: {
             ...data,
-            paymentType: {
-              title: payment.data.paymentType.title,
-              image: payment.data.paymentType.image,
-              type: payment.data.paymentType.type,
-            },
+            paymentType: payment.data.paymentType,
           },
         },
       }),
     );
   };
 
-  const handleChangePaymentType = () => {
-    dispatch(
-      Creators.paymentType({
-        image: null,
-        title: '',
-        type: '',
-      }),
-    );
-  };
-
   return (
     <VStack flex="1">
-      {payment.data.paymentType.type !== '' ? (
+      {payment.data.paymentType !== '' ? (
         <>
           <ScrollView
             paddingX="4"
             flex="1"
             showsVerticalScrollIndicator={false}>
             <Box mb="4">
-              <Radio.Group
-                name="radioGroup"
-                value={payment.data.paymentType.type}
-                colorScheme={'light'}>
-                <PaymentTypeRadio
-                  title={payment.data.paymentType.title}
-                  image={payment.data.paymentType.image}
-                  value={payment.data.paymentType.type}
-                  button
-                  onPress={handleChangePaymentType}
-                />
-              </Radio.Group>
+              <PaymentTypeSelected />
             </Box>
 
             <Box mb="2">

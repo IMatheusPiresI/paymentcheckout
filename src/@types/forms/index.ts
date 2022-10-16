@@ -27,11 +27,7 @@ type PaymentNames =
   | 'expirationDate'
   | 'securityCode';
 
-type PaymentType = {
-  title: string;
-  type: string;
-  image: ImageSourcePropType | null;
-};
+type PaymentType = string;
 
 export type {
   ShippingForm,

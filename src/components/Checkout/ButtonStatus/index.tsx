@@ -30,8 +30,9 @@ export const ButtonStatus: React.FC<ButtonStatusProps> = ({
 
   const handleGoBackToStep = () => {
     if (state.currentStep === title || state.steps.review.complete) return;
-    console.log(title);
-    dispatch(
+    if (title === 'Payment' && !state.steps.shipping.complete) return;
+
+    return dispatch(
       Creators.goBackToStep({
         currentStep: title,
       }),

@@ -13,7 +13,7 @@ import {ImageSourcePropType} from 'react-native';
 
 type PaymentTypeRadioProps = {
   title: string;
-  image: ImageSourcePropType;
+  image: ImageSourcePropType | undefined;
   value: string;
   button?: boolean;
 } & IButtonProps;

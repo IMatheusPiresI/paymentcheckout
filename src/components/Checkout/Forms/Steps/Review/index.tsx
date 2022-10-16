@@ -1,16 +1,18 @@
 import {Button, HStack, Image, ScrollView, Text, VStack} from 'native-base';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import {ButtonConfirm} from '../../../ButtonConfirm';
 import {Creators} from '../../../../../store/ducks/checkout';
+import {getPaymentInfo} from '../../../../../utils/renderImagePayment';
 
 export const FormReview: React.FC = () => {
   const {
     steps: {payment, shipping},
   } = useSelector((state: any) => state.checkoutReducer);
   const dispatch = useDispatch();
+  const paymentInfo = getPaymentInfo(payment.data.paymentType);
 
   const renderLastPaymentCardNumber = () => {
     const lastItem: number = payment.data.cardNumber.length;
@@ -49,7 +51,7 @@ export const FormReview: React.FC = () => {
           <HStack mt="4" justifyContent="space-between">
             <HStack>
               <Image
-                source={payment.data.paymentType.image}
+                source={paymentInfo.image}
                 alt="payment method"
                 width="16"
                 height="5"

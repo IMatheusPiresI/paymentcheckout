@@ -35,11 +35,7 @@ const initialState: ReduxInitialState = {
         expirationDate: '',
         nameCard: '',
         cardNumber: '',
-        paymentType: {
-          image: null,
-          title: '',
-          type: '',
-        },
+        paymentType: '',
         securityCode: '',
       },
     },
@@ -55,11 +51,18 @@ export default function checkoutReducer(
 ) {
   switch (action.type) {
     case Types.PAYMENT_TYPE:
+      console.log('entrei');
       state.steps.payment.data['paymentType'] = action.payload.paymentType!;
+      console.log(action.payload.paymentType, 'sou o tipo passadoooo');
+      console.log(state.steps.payment.data, 'dataaaaa payment');
       return (state = {
         currentStep: state.currentStep,
         steps: {...state.steps},
       });
+    // return (state = {
+    //   currentStep: state.currentStep,
+    //   steps: {...state.steps},
+    // });
 
     case Types.COMPLETE_STEP:
       switch (action.payload.completeStep?.currentStep) {
@@ -111,11 +114,7 @@ export default function checkoutReducer(
                   expirationDate: '',
                   nameCard: '',
                   cardNumber: '',
-                  paymentType: {
-                    image: null,
-                    title: '',
-                    type: '',
-                  },
+                  paymentType: '',
                   securityCode: '',
                 },
               },
