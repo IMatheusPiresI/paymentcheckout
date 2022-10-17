@@ -55,7 +55,7 @@ export const FormShipping: React.FC = () => {
             city: data.city,
             country: data.country,
             fullName: data.fullName,
-            number: data.number,
+            number: String(data.number),
             streetAddress: data.streetAddress,
           },
         },
