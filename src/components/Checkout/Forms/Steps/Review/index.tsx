@@ -6,7 +6,7 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import {ButtonConfirm} from '../../../ButtonConfirm';
 import {Creators} from '../../../../../store/ducks/checkout';
 import {getPaymentInfo} from '../../../../../utils/renderImagePayment';
-import {ReduxState} from '../../../../../@types/redux';
+import {ReduxState, ReduxStep} from '../../../../../@types/redux';
 
 export const FormReview: React.FC = () => {
   const {
@@ -36,6 +36,14 @@ export const FormReview: React.FC = () => {
     );
   };
 
+  const handleGoEdit = (step: ReduxStep) => {
+    dispatch(
+      Creators.goBackToStep({
+        currentStep: step,
+      }),
+    );
+  };
+
   return (
     <VStack flex="1">
       <ScrollView px="4" flex="1" showsVerticalScrollIndicator={false} mb="1">
@@ -44,7 +52,11 @@ export const FormReview: React.FC = () => {
             <Text fontWeight="bold" fontSize={17}>
               Payment
             </Text>
-            <Button p={0} bgColor="transparent" variant="ghost">
+            <Button
+              p={0}
+              bgColor="transparent"
+              variant="ghost"
+              onPress={() => handleGoEdit('Payment')}>
               <Text color="cyan.500" fontWeight="bold" letterSpacing={'lg'}>
                 Edit
               </Text>
@@ -87,7 +99,11 @@ export const FormReview: React.FC = () => {
             <Text fontWeight="bold" fontSize={17}>
               Shipping address
             </Text>
-            <Button p={0} bgColor="transparent" variant="ghost">
+            <Button
+              p={0}
+              bgColor="transparent"
+              variant="ghost"
+              onPress={() => handleGoEdit('Shipping')}>
               <Text color="cyan.500" fontWeight="bold" letterSpacing={'lg'}>
                 Edit
               </Text>
