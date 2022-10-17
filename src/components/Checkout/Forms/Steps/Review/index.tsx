@@ -16,8 +16,9 @@ export const FormReview: React.FC = () => {
   const paymentInfo = getPaymentInfo(payment.data.paymentType);
 
   const renderLastPaymentCardNumber = () => {
-    const lastItem: number = payment.data.cardNumber.length;
-    return payment.data.cardNumber.slice(lastItem - 4, lastItem);
+    let numberCard = String(payment.data.cardNumber);
+    const lastItem: number = numberCard.length;
+    return numberCard.slice(lastItem - 4, lastItem);
   };
 
   const renderShippingInfo = (shippingInfo: string) => {
@@ -107,7 +108,7 @@ export const FormReview: React.FC = () => {
             </HStack>
             <HStack justifyContent="space-between" mt="2">
               <Text color="gray.600">Number</Text>
-              <Text>{renderShippingInfo(shipping.data.number)}</Text>
+              <Text>{shipping.data.number}</Text>
             </HStack>
           </VStack>
         </VStack>

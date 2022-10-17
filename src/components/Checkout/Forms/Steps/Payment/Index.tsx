@@ -18,9 +18,18 @@ import {ReduxState} from '../../../../../@types/redux';
 
 const schema = yup.object({
   nameCard: yup.string().required(),
-  cardNumber: yup.string().required(),
-  expirationDate: yup.string().required(),
-  securityCode: yup.string().required(),
+  cardNumber: yup
+    .number()
+    .typeError('This field only accepts numbers')
+    .required('Card number is required'),
+  expirationDate: yup
+    .number()
+    .typeError('This field only accepts numbers')
+    .required('Expiration date is required'),
+  securityCode: yup
+    .number()
+    .typeError('This field only accepts numbers')
+    .required('Security code is required'),
 });
 
 export const FormPayment: React.FC = () => {
@@ -37,12 +46,14 @@ export const FormPayment: React.FC = () => {
     resolver: yupResolver(schema),
     mode: 'onChange',
     defaultValues: {
-      cardNumber: payment.data.cardNumber,
-      expirationDate: payment.data.expirationDate,
+      cardNumber: String(payment.data.cardNumber),
+      expirationDate: String(payment.data.expirationDate),
       nameCard: payment.data.nameCard,
-      securityCode: payment.data.securityCode,
+      securityCode: String(payment.data.securityCode),
     },
   });
+
+  // REMOVER
 
   const handleSubmitForm = (data: PaymentForm) => {
     dispatch(
@@ -50,7 +61,10 @@ export const FormPayment: React.FC = () => {
         currentStep: 'Payment',
         payment: {
           data: {
-            ...data,
+            cardNumber: data.cardNumber,
+            expirationDate: data.expirationDate,
+            nameCard: data.nameCard,
+            securityCode: data.securityCode,
             paymentType: payment.data.paymentType,
           },
         },
@@ -58,6 +72,7 @@ export const FormPayment: React.FC = () => {
     );
   };
 
+  console.log(payment.data);
   return (
     <VStack flex="1">
       {payment.data.paymentType !== '' ? (
@@ -84,6 +99,8 @@ export const FormPayment: React.FC = () => {
                 paymentNames="cardNumber"
                 label="Card number"
                 placeholder="Card number"
+                maxLength={16}
+                keyboardType="numeric"
                 paymentControl={control}
                 error={errors.cardNumber}
               />
@@ -94,6 +111,8 @@ export const FormPayment: React.FC = () => {
                   paymentNames="expirationDate"
                   label="Expiration date"
                   placeholder="MM/YY"
+                  keyboardType="numeric"
+                  maxLength={4}
                   paymentControl={control}
                   error={errors.expirationDate}
                   horizontal
@@ -104,6 +123,8 @@ export const FormPayment: React.FC = () => {
                   paymentNames="securityCode"
                   label="Security code"
                   placeholder="CVC"
+                  keyboardType="numeric"
+                  maxLength={3}
                   paymentControl={control}
                   error={errors.securityCode}
                   horizontal
